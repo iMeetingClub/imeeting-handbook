@@ -156,6 +156,7 @@ def main():
     # 5. 开启 Pages
     url = None
     if not args.no_pages:
+      try:
         src = {"source": {"branch": branch, "path": "/"}}
         st, res = gh.call("POST", "/repos/%s/pages" % args.repo, src, expect=(201, 409, 422))
         if st != 201:
@@ -171,6 +172,13 @@ def main():
                 print("Pages 状态：%s  %s" % (page.get("status"), url))
                 if page.get("status") == "built":
                     break
+      except RuntimeError as e:
+        print("注意：无权限修改 Pages 设置（内容已推送成功，站点会自动重建）")
+        print("      %s" % str(e)[:180])
+        st, page = gh.call("GET", "/repos/%s/pages" % args.repo, expect=(200, 403, 404))
+        if st == 200:
+            url = page.get("html_url")
+            print("Pages 地址：%s" % url)
     print()
     print("仓库：https://github.com/%s" % args.repo)
     print("站点：%s" % (url or ("https://%s.github.io/%s/" % (owner, name))))

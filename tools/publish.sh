@@ -1,11 +1,11 @@
 #!/bin/bash
 # 一键发布：编译 .jsx → 同步到 deploy/ → 生成预览图 → 推到 GitHub Pages
-# 用法：./publish.sh [owner/repo]     默认 pingyangzangse/imeeting-guide
-# token：从环境变量 GH_TOKEN 或 ~/.dsh/.ghtoken 读取（不写进项目目录）
+# 用法：./publish.sh [owner/repo]     默认 iMeetingClub/imeeting-handbook
+# token：从环境变量 GH_TOKEN 读取，或写成 /tmp/ghtoken（不写进项目目录，用完请撤销）
 set -e
 HERE="$(cd "$(dirname "$0")" && pwd)"
 IMEETING="$(cd "$HERE/.." && pwd)"
-REPO="${1:-pingyangzangse/imeeting-guide}"
+REPO="${1:-iMeetingClub/imeeting-handbook}"
 SRC="$IMEETING/site"
 DST="$IMEETING/deploy"
 
